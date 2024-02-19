@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     printf("we are so back\n");
 
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(8000);
+    server_addr.sin_port = htons(8080);
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     if (bind(socket_desc,(struct sockaddr*)&server_addr,sizeof(server_addr)) < 0)
@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
         perror("listen failed\n");
         return -1;
     }
+    printf("where connection man\n");
 
     client_size = sizeof(client_addr);
     client_sock = accept(socket_desc,(struct sockaddr*)&client_addr,&client_size);
