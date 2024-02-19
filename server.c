@@ -37,5 +37,13 @@ int main(int argc, char** argv) {
     }
 
     client_size = sizeof(client_addr);
-    client_sock = accept(socket_desc,(struct sockaddr*)&client_addr,&client_addr)
+    client_sock = accept(socket_desc,(struct sockaddr*)&client_addr,&client_size);
+
+    if (client_sock < 0) {
+        perror("client failed? might be too much my guy");
+        return -1;
+    }
+    printf("IP: %s & PORT: %i",inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port));
+
+
 }
