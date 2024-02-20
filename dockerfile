@@ -1,8 +1,8 @@
 FROM archlinux:latest AS BUILDER
-RUN pacman -Sy --noconfirm gcc
+RUN pacman -Sy --noconfirm gcc make
 COPY . /app
 WORKDIR /app
-RUN gcc server.c -o server
+RUN make
 
 FROM archlinux:latest AS LAUNCH
 COPY --from=BUILDER /app/server /app/server
