@@ -8,4 +8,4 @@ FROM archlinux:latest AS LAUNCH
 COPY --from=BUILDER /app/server /app/server
 WORKDIR /app
 EXPOSE 8080
-CMD ["./server","public/index.html"]
+CMD ["./server","/"]

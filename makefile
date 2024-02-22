@@ -2,9 +2,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic -std=c99
 LDFLAGS =
 SRC_DIR = src
+SOCK_DIR = $(SRC_DIR)/socket
 HEADER_DIR = $(SRC_DIR)/header
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SOCK_DIR)/*.c)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(SRC_DIR)/%.o, $(SRC_FILES))
 TARGET = server
 

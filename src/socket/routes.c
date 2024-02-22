@@ -1,5 +1,5 @@
 #include "server.h"
-#include "header/routes.h"
+#include "routes.h"
 
 void s_res(int client_sock, const char *message, const char *message_type) {
     char response[BUFFER];
@@ -17,7 +17,7 @@ void handle_req(int client_sock) {
     sscanf(buf, "GET %255s", template_path);
 
     if (template_path[strlen(template_path) - 1] == '/')
-        strcat(template_path, "index.html");
+        strcat(template_path, "+page.svelte");
     
     char full_path[512];
     snprintf(full_path, sizeof(full_path),"%s%s",WEB_ROOT,template_path);

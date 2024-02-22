@@ -35,29 +35,20 @@ int wSock() {
         return -1;
     } printf("where connection man\n");
 
-    while (1) {
-        client_size = sizeof(client_addr);
-        client_sock = accept(socket_desc, (struct sockaddr*)&client_addr, &client_size);
-        if (client_sock <= 0) {
-            perror("client failed? might be too much my guy");
-            return -1;
-        } printf("IP: %s & PORT: %i\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+     while (1) {
+        client_sock = accept(socket_desc, (struct sockaddr *)&client_addr, &client_size);
+        if (client_sock == 0) {
+            perror("shit gikk feil");
+            continue;
+        } printf("yoo clientsock e kobla til\n");
 
-        if (recv(client_sock, client_message, strlen(server_message), 0) <= 0) {
-            perror("message does not respect buffer boundaries >:( \n");
-            return -1;
-        }
-        printf("Msg from client: %s\n", client_message);
+        handle_req(client_sock);
 
-        strcpy(server_message, "message from server\n");
+        s_res(client_sock, "nahhh", "application/javascript");
 
-        if (send(client_sock, server_message, strlen(server_message), 0) <= 0)
-        {
-            perror("failed error thingy bleehhh\n");
-            return -1;
-        }
-
+        // Close client socket
         close(client_sock);
+        printf("Connection closed.\n");
     }
 
     close(socket_desc);
