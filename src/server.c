@@ -1,4 +1,5 @@
-#include "server.h"
+#include "header/server.h"
+#include "header/routes.h"
 
 struct sockaddr_in server_addr;
 
@@ -34,28 +35,31 @@ int wSock() {
         return -1;
     } printf("where connection man\n");
 
-    client_size = sizeof(client_addr);
-    client_sock = accept(socket_desc,(struct sockaddr*)&client_addr,&client_size);
-    if (client_sock <= 0) {
-        perror("client failed? might be too much my guy");
-        return -1;
-    } printf("IP: %s & PORT: %i",inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port));
+    while (1) {
+        client_size = sizeof(client_addr);
+        client_sock = accept(socket_desc, (struct sockaddr*)&client_addr, &client_size);
+        if (client_sock <= 0) {
+            perror("client failed? might be too much my guy");
+            return -1;
+        } printf("IP: %s & PORT: %i\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 
-    if (recv(client_size,client_message,strlen(server_message),0) <= 0) {
-        perror("message does not respect buffer boundaries >:( \n");
-        return -1;
+        if (recv(client_sock, client_message, strlen(server_message), 0) <= 0) {
+            perror("message does not respect buffer boundaries >:( \n");
+            return -1;
+        }
+        printf("Msg from client: %s\n", client_message);
+
+        strcpy(server_message, "message from server\n");
+
+        if (send(client_sock, server_message, strlen(server_message), 0) <= 0)
+        {
+            perror("failed error thingy bleehhh\n");
+            return -1;
+        }
+
+        close(client_sock);
     }
-    printf("Msg from client: %s\n", client_message);
 
-    strcpy(server_message, "mesage from server\n");
-
-    if (send(client_sock,server_message,strlen(server_message),0) <= 0)
-    {
-        perror("failed error thingy bleehhh\n");
-        return -1;
-    }
-    
     close(socket_desc);
-    close(client_sock);
     return 0;
 }
