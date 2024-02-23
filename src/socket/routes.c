@@ -17,7 +17,7 @@ void handle_req(int client_sock) {
     sscanf(buf, "GET %255s", template_path);
 
     if (template_path[strlen(template_path) - 1] == '/')
-        strcat(template_path, "+page.svelte");
+        strcat(template_path, "index.html");
     
     char full_path[512];
     snprintf(full_path, sizeof(full_path),"%s%s",WEB_ROOT,template_path);
@@ -25,7 +25,7 @@ void handle_req(int client_sock) {
     int fd = open(full_path, O_RDONLY);
     if (fd == -1)
     {
-        s_res(client_sock, "418 i'm a teapot","text/plain");
+        s_res(client_sock, "error:418\n i'm a teapot","text/plain");
     } else {
         char file_buf[8192];
         ssize_t bytes_read;
